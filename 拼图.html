@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>puzzle</title>
+  <style>
+    .box {
+      margin: 100px auto 0;
+      background-color: #ccc;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button {
+      margin: 0 auto;
+      display: block;
+    }
+
+    .box .img {
+      background-image: url("timg (1).jpg");
+      transition: all 0.1s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <!-- <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3366508598,2587362374&fm=26&gp=0.jpg"
+            alt=""> -->
+  </div>
+
+  <button class="luan">打乱</button>
+  <button class="huanyuan">还原</button>
+</body>
+<script>
+  var box = document.getElementsByClassName("box")[0];
+  var luan = document.getElementsByClassName("luan")[0];
+  var huanyuan = document.getElementsByClassName("huanyuan")[0];
+
+  var arr = [];
+  var width = 50;
+  //封装重新渲染拼图
+  function refreshPuzzle(solumn, row, el) {
+    el.innerText = "";
+    arr = [];
+    var fksum = solumn * row;
+    el.style.width = solumn * width + "px";
+    el.style.height = row * width + "px";
+    for (let index = 0; index < fksum; index++) {
+      arr.push(index);
+      var s = document.createElement("div");
+      s.style.position = "absolute";
+      s.style.top = parseInt(index / solumn) * width + "px";
+      s.style.left = (index % solumn) * width + "px";
+      s.style.width = width - 1 + "px";
+      s.style.height = width - 1 + "px";
+      s.className = "img";
+      s.setAttribute("i", index);
+      s.style.backgroundPositionY = -parseInt(index / solumn) * width + "px";
+      s.style.backgroundPositionX = (-index % solumn) * width + "px";
+      s.onmousedown = yido;
+      el.appendChild(s);
+    }
+    var img = document.getElementsByClassName("img");
+    for (let index = 0; index < img.length; index++) {
+      img[index].style.backgroundSize = `${box.style.width} ${box.style.height}`
+    }
+  }
+  //方块数量
+  var solumn = 18;
+  var row = 12;
+  var fksum = solumn * row;
+  box.style.width = solumn * width + "px";
+  box.style.height = row * width + "px";
+  //Object.style.backgroundImage=url(URL)|none
+  for (let index = 0; index < fksum; index++) {
+    arr.push(index);
+    var s = document.createElement("div");
+    s.style.position = "absolute";
+    s.style.top = parseInt(index / solumn) * width + "px";
+    s.style.left = (index % solumn) * width + "px";
+    s.style.width = width - 1 + "px";
+    s.style.height = width - 1 + "px";
+    s.className = "img";
+    s.setAttribute("i", index);
+    s.style.backgroundPositionY = -parseInt(index / solumn) * width + "px";
+    s.style.backgroundPositionX = (-index % solumn) * width + "px";
+    s.onmousedown = yido;
+    box.appendChild(s);
+  }
+  var img = document.getElementsByClassName("img");
+  for (let index = 0; index < img.length; index++) {
+    img[index].style.backgroundSize = `${box.style.width} ${box.style.height}`
+
+  }
+
+  function yido(e) {
+    var that = this;
+    // 本来的位置
+    var selfy = that.style.top;
+    var selfx = that.style.left;
+    // 鼠标点击的位置 - 小盒子距离大盒子距离 - 大盒子距离可视区距离
+    var x = e.clientX - this.offsetLeft - this.parentNode.offsetLeft;
+    var y =
+      e.clientY -
+      this.offsetTop -
+      this.parentNode.offsetTop -
+      document.body.scrollTop;
+    e.preventDefault();
+    that.style.zIndex = 1000;
+    document.onmousemove = function (e) {
+      //推动距离
+      var ex = e.clientX - that.parentNode.offsetLeft - x;
+      var ey = e.clientY - that.parentNode.offsetTop - y;
+      if (ey > 0 && ey < parseInt(box.style.height) - width) {
+        that.style.top = ey + "px";
+      }
+      if (ex > 0 && ex < parseInt(box.style.width) - width) {
+        that.style.left = ex + "px";
+      }
+    };
+    document.onmouseup = function (e) {
+      //改变位置
+      var ey =
+        e.clientY -
+        that.parentNode.offsetTop +
+        document.documentElement.scrollTop;
+      var ex = e.clientX - that.parentNode.offsetLeft;
+      var index = parseInt(ex / width) + parseInt(ey / width) * solumn;
+      var selfindex =
+        parseInt(parseInt(selfx) / width) + parseInt(parseInt(selfy) / width) * solumn;
+      //获取数组对象box对象
+      var i = arr.indexOf(index);
+      var si = arr.indexOf(selfindex);
+      var temp = arr[i];
+      arr[i] = arr[si];
+      arr[si] = temp;
+      var iy = box.children[i].offsetTop;
+      var ix = box.children[i].offsetLeft;
+
+      that.style.top = iy + "px";
+      that.style.left = ix + "px";
+      box.children[i].style.top = selfy;
+      box.children[i].style.left = selfx;
+      //还原位置
+      that.style.zIndex = 1;
+      document.onmousemove = "";
+      document.onmouseup = "";
+    };
+  }
+  var searcharr = {};
+  luan.onclick = function () {
+    for (let index = 0; index < arr.length; index++) {
+      var ran = parseInt(Math.random() * 100);
+      var temp = arr[index];
+      arr[index] = arr[ran];
+      arr[ran] = temp;
+    }
+    for (let index = 0; index < arr.length; index++) {
+      var s = box.children;
+      s[index].style.top = (parseInt(arr[index] / solumn)) * width + "px";
+      s[index].style.left = (arr[index] % solumn) * width + "px";
+    }
+  };
+  huanyuan.onclick = function () {
+    arr.sort(function (a, b) {
+      return a - b;
+    });
+    for (let index = 0; index < arr.length; index++) {
+      var s = box.children;
+      s[index].style.top = (parseInt(arr[index] / solumn)) * width + "px";
+      s[index].style.left = (arr[index] % solumn) * width + "px";
+    }
+  };
+</script>
+
+</html>

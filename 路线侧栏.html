@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <style>
+    .carsider {
+      position: relative;
+      width: 6px;
+      margin: auto;
+    }
+
+    .fourdor {
+      padding: 0;
+      margin: 0;
+      margin-bottom: 2px;
+    }
+
+    .fourdor li {
+      list-style: none;
+      height: 4px;
+      width: 4px;
+      border-radius: 50%;
+      background-color: #d6d9f0;
+      margin-top: 3px;
+      margin-left: 1px;
+    }
+
+    .start {
+      height: 6px;
+      width: 6px;
+      border-radius: 50%;
+      background-color: #00c965;
+    }
+
+    .end {
+      height: 6px;
+      width: 6px;
+      border-radius: 50%;
+      background-color: #ff0c29;
+    }
+
+    .busline {
+      width: 6px;
+      border-radius: 6px;
+      /* height: 50px; */
+      height: auto;
+      position: relative;
+      background-color: #435b75;
+      margin-bottom: 3px;
+      transition: all 0.5s;
+      box-sizing: border-box;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .topdor {
+      position: absolute;
+      top: 0.5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #fff;
+    }
+
+    .bottomdor {
+      position: absolute;
+      bottom: 1.5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #fff;
+    }
+
+    .extend {
+      /* position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 30px; */
+      height: 10px;
+      width: 10px;
+      margin-left: 30px;
+      background-color: green;
+      transition: all 0.5s;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="carsider">
+    <div class="start"></div>
+    <ul class="fourdor">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <div class="busline">
+      <div class="topdor"></div>
+      <div class="extend"></div>
+      <div class="bottomdor"></div>
+    </div>
+    <ul class="fourdor">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <div class="busline">
+      <div class="topdor"></div>
+      <div class="bottomdor"></div>
+    </div>
+    <ul class="fourdor">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <div class="end"></div>
+  </div>
+  <script>
+    document.getElementsByClassName("extend")[0].onclick = function () {
+      //this.parentNode.style.height = "300px";
+      this.style.height = "300px";
+    };
+    // console.log(document.getElementsByClassName("extend")[0]);
+  </script>
+</body>
+
+</html>

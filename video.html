@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <video src="C:\Users\Administrator\Desktop\Video_2019-07-25_083826.wmv" height="200px" controls="controls"></video> -->
+    <div class="content">
+        <!-- 支持ogg MP4(h.264编码) WebM 格式的视频-->
+        <input id="v_file" type="file" style="display:none;" onChange="play()" />
+        <button id="play" onClick="yincang()">播放</button>
+        <video id="video_id" height="500px" controls autoplay></video>
+    </div>
+    <script>
+        function yincang() {
+            var v_file = document.getElementById('v_file');
+            v_file.click();
+        }
+
+        function play() {
+            var file = document.getElementById('v_file').files[0];
+            var url = URL.createObjectURL(file);
+            console.log(url);
+            console.log(file);
+
+            document.getElementById("video_id").src = url;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <video id="video"></video>
+    <script>
+      var video = document.getElementById("video");
+      blob_load = src => {
+        const req = new XMLHttpRequest();
+        req.open("GET", src, true);
+        req.responseType = "blob";
+        req.onload = function() {
+          // Onload is triggered even on 404
+          // so we need to check the status code
+          if (this.status === 200) {
+            const videoBlob = this.response;
+            const blobSrc = URL.createObjectURL(videoBlob); // IE10+
+            // Video is now downloaded
+            // and we can set it as source on the video element
+            // video.src = blobSrc ;
+
+            console.log(blobSrc, "blobSrc加载完毕");
+            var timid;
+            timid = setInterval(function() {
+              if (blobSrc) {
+                video.src = blolSrc;
+                clearInterval(timid);
+              }
+            }, 1000);
+          }
+        };
+        req.onerror = function() {
+          // Error
+        };
+        req.send();
+      };
+      blob_load(
+        "http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
+      );
+    </script>
+  </body>
+</html>

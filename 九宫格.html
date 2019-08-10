@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 600px;
+        height: 600px;
+        background-color: #ccc;
+        display: flex;
+        text-align: center;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-around;
+      }
+      .litbox {
+        width: 33%;
+        height: 33%;
+        line-height: 100%;
+        background-color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box"></div>
+    <button class="huizong">汇总</button>
+    <script>
+      var box = document.querySelector(".box");
+      var huizong = document.querySelector(".huizong");
+
+      console.log(box);
+      for (var i = 0; i < 9; i++) {
+        var s = document.createElement("div");
+        s.draggable = true;
+        s.ondragstart = drag;
+        s.ondragend = drop;
+        s.setAttribute("i", i);
+        s.innerText = i + 1;
+        s.className = "litbox";
+        box.appendChild(s);
+      }
+      var x;
+      var y;
+      function drag(e) {
+        x = e.screenX;
+        y = e.screenY;
+      }
+      function drop(e) {
+        // console.log(e);
+        var bclist = box.children;
+        var s = +this.getAttribute("i");
+        //余3=2
+        if (e.screenX - 30 > x && s != 2 && s != 5 && s != 8) {
+          console.log("右移");
+          var a = bclist[s + 1].innerText;
+          bclist[s + 1].innerText = bclist[s].innerText;
+          bclist[s].innerText = a;
+          return;
+        }
+        //最后一行范围
+        if (e.screenY - 30 > y && s != 6 && s != 7 && s != 8) {
+          console.log("下移");
+          var a = bclist[s + 3].innerText;
+          bclist[s + 3].innerText = bclist[s].innerText;
+          bclist[s].innerText = a;
+          return;
+        }
+        //余3=0
+        if (x > e.screenX + 30 && s != 0 && s != 3 && s != 6) {
+          console.log("左移");
+          var a = bclist[s - 1].innerText;
+          bclist[s - 1].innerText = bclist[s].innerText;
+          bclist[s].innerText = a;
+          return;
+        }
+        //第一行范围
+        if (y > e.screenY + 30 && s != 0 && s != 1 && s != 2) {
+          console.log("上移");
+          var a = bclist[s - 3].innerText;
+          bclist[s - 3].innerText = bclist[s].innerText;
+          bclist[s].innerText = a;
+          return;
+        }
+      }
+      huizong.onclick = function(e) {
+        var bclist = box.children;
+        var arr = [];
+        for (var i = 0; i < bclist.length - 1; i++) {
+          arr.push(bclist[i].innerText);
+        }
+        alert(arr.join(" "));
+      };
+    </script>
+  </body>
+</html>
